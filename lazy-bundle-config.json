@@ -1,0 +1,22 @@
+{
+	"in": "static/unbundled/",
+	"out": "static/",
+	"bundles": [
+		{
+			"in": [
+				"css/a.css",
+				"css/b.css"
+			],
+			"out": "bundle.css"
+		},
+		{
+			"in": [
+				"js/package/p.js",
+				"js/main.js",
+				"js/controllers/a.js",
+				"js/controllers/b.js"
+			],
+			"out": "bundle.js"
+		}
+	]
+}
