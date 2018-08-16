@@ -3,6 +3,10 @@
 	"out": "static/",
 	"bundles": [
 		{
+			"comment": {
+				"start": "/*",
+				"end": "*/"
+			},
 			"in": [
 				"css/a.css",
 				"css/b.css"
@@ -10,6 +14,10 @@
 			"out": "bundle.css"
 		},
 		{
+			"comment": {
+				"start": "//",
+				"end": ""
+			},
 			"in": [
 				"js/package/p.js",
 				"js/main.js",

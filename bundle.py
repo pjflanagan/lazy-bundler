@@ -54,11 +54,22 @@ class Bundler():
 			sys.exit(0)
 		return bundle["in"]
 
-	def write_file(self, in_files, out_file):
+	def get_comment_type(self, bundle):
+		if "comment" not in bundle:
+			print("'comment' not in bundle")
+			sys.exit(0)
+		return bundle["comment"]
+
+	def write_comment(self, fname, comment):
+		length = len(fname)
+		divider = "=" * length
+		return "\n\n" + comment["start"] + " " + divider + " " + comment["end"] + "\n" + comment["start"] + " " + fname + " " + comment["end"] + "\n" + comment["start"] + " " + divider + " " + comment["end"] + "\n\n"
+
+	def write_file(self, in_files, out_file, comment):
 		with open(self.out_path + out_file, 'w') as outfile:
 			for fname in in_files:
 				with open(self.in_path + fname) as in_file:
-					outfile.write("\n")
+					outfile.write(self.write_comment(fname, comment))
 					for line in in_file:
 						outfile.write(line)
 		return
@@ -67,7 +78,8 @@ class Bundler():
 		for bundle in self.bundles:
 			in_files = self.get_in_files(bundle)
 			out_file = self.get_out_file(bundle)
-			self.write_file(in_files, out_file)
+			comment = self.get_comment_type(bundle)
+			self.write_file(in_files, out_file, comment)
 		return
 
 class BundleEventHandler(FileSystemEventHandler):
@@ -112,8 +124,9 @@ if __name__ == "__main__":
 						datefmt='%Y-%m-%d %H:%M:%S')
 
 	bundler = Bundler()
-	event_handler = BundleEventHandler(bundler)
+	bundler.update_bundles()
 
+	event_handler = BundleEventHandler(bundler)
 	observer = Observer()
 	observer.schedule(event_handler, bundler.get_watch_path(), recursive=True)
 	observer.start()
